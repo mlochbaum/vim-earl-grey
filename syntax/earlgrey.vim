@@ -45,6 +45,8 @@ syn match   egSemicolon ";"
 syn match   egBracket "[([{}\])]"
 " Comma
 syn match   egComma ","
+" Dots
+syn match   egDots "\.\+"
 " Line continuation
 syn match   egLineContinue "^\\"
 
@@ -138,6 +140,7 @@ if !exists("did_eg_syntax_inits")
   hi link egSemicolon           Delimiter
   hi link egBracket             Delimiter
   hi link egComma               Delimiter
+  hi link egDots                Delimiter
   hi link egLineContinue        Delimiter
   hi link egComment             Comment
   hi link egTodo                Todo
