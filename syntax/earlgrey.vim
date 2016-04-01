@@ -26,9 +26,9 @@ let s:id_regex  = "[a-zA-Z$_][a-zA-Z$_\\-0-9]*"
 " [+\\\-*/~\^<>=%&|?!@#:]\+
 let s:op1_regex = "[+\\\\\\-*/~\\^<>=%&|?!@#:]\\+"
 " Keyword operator
-" \(as\|and\|each\|in\|is\|mod\|not\|of\|or\|when\|where\|with\)[+\*/\~\^<>=%&|?!@#.:]*[^a-zA-Z$_\-0-9]\@=
+" \(as\|and\|each\|in\|is\|mod\|not\|of\|or\|when\|where\|with\)[+\*/\~\^<>=%&|?!@#.:]*\([^a-zA-Z$_\-0-9]\|\n\)\@=
 let s:op2_words = "\\(as\\|and\\|each\\|in\\|is\\|mod\\|not\\|of\\|or\\|when\\|where\\|with\\)"
-let s:op2_regex = s:op2_words ."[+\\*/\\~\\^<>=%&|?!@#.:]*[^a-zA-Z$_\\-0-9]\\@="
+let s:op2_regex = s:op2_words ."[+\\*/\\~\\^<>=%&|?!@#.:]*\\([^a-zA-Z$_\\-0-9]\\|\\n\\)\\@="
 
 
 " Earl Grey groups
@@ -112,7 +112,7 @@ exec "syn match egFunction `". s:id_regex ."\\ze:`"
 " An identifier followed by a keyword operator or operator with space
 " is not a function
 exec "syn match egIdentifier `". s:id_regex ."\\ze\\s\\+"
-  \ ."\\(". s:op2_regex ."\\|". s:op1_regex ."\\s\\)`"
+  \ ."\\(". s:op2_regex ."\\|". s:op1_regex ."\\(\\s\\|\\n\\)\\)`"
 
 
 " Operator
@@ -120,10 +120,10 @@ exec "syn match egOperator `\\(". s:op1_regex ."\\|". s:op2_regex ."\\)`"
   \ ." skipwhite nextgroup=egIdentifierColon"
 " Low-precedence operators don't have nextgroup clause
 syn match   egOperator `\(->\|=>\|%\)\ze[^+\\\-*/~\^<>=%&|?!@#:]`
-syn match   egOperator `\(each\|each\*\|where\|with\)\ze\s`
+syn match   egOperator `\(each\|each\*\|where\|with\)\ze\(\s\|\n\)`
 " Operator ending in =
 syn match   egOperator `[+\\\-*/~\^<>=%&|?!@#:]*=\ze[^+\\\-*/~\^<>=%&|?!@#:]`
-exec "syn match egOperator `". s:op2_words ."[+\\*/\\~\\^<>=%&|?!@#.:]*=\\ze\\s`"
+exec "syn match egOperator `". s:op2_words ."[+\\*/\\~\\^<>=%&|?!@#.:]*=\\ze\\(\\s\\|\\n\\)`"
 
 " Chain
 exec "syn match egChain `@\\(". s:id_regex ."\\)\\?`"
